@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.stacktivity.smartwarehouse.R
 import com.stacktivity.smartwarehouse.contracts.InventoryContract
+import com.stacktivity.smartwarehouse.utils.BaseListView
 
 class InventoryView: BaseListView(), InventoryContract.View {
 //    private lateinit var presenter: InventoryContract.Presenter

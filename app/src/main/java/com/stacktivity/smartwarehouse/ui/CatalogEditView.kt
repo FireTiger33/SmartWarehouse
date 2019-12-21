@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.stacktivity.smartwarehouse.R
 import com.stacktivity.smartwarehouse.contracts.CatalogContract
+import com.stacktivity.smartwarehouse.utils.BaseListView
 
 class CatalogEditView: BaseListView(), CatalogContract.View {
 

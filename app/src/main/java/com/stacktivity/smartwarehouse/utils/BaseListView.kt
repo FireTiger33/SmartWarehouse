@@ -1,4 +1,4 @@
-package com.stacktivity.smartwarehouse.ui
+package com.stacktivity.smartwarehouse.utils
 
 import android.view.LayoutInflater
 import android.view.View
