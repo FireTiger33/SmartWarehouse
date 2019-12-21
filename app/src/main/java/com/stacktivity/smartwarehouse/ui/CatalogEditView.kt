@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.recyclerview.widget.RecyclerView
 import com.stacktivity.smartwarehouse.R
 import com.stacktivity.smartwarehouse.contracts.CatalogContract
+import com.stacktivity.smartwarehouse.utils.BaseItemTouchHelper
 import com.stacktivity.smartwarehouse.utils.BaseListView
 
 class CatalogEditView: BaseListView(), CatalogContract.View {
@@ -28,6 +30,11 @@ class CatalogEditView: BaseListView(), CatalogContract.View {
 
         return view
     }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
+        (activity as BaseItemTouchHelper.ItemTouchHelperListener).onSwiped(viewHolder, direction, position)
+    }
+
     override fun setPresenter(presenter: CatalogContract.Presenter) {
         this.presenter = presenter
     }

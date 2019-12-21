@@ -21,6 +21,15 @@ class CatalogRepository(private val preferences: SharedPreferences) : CatalogCon
         saveTitleListToPreferences()
     }
 
+    override fun removeTitle(pos: Int) {
+        titleList.removeAt(pos)
+        saveTitleListToPreferences()
+    }
+
+    override fun restoreTitle(title: String, pos: Int) {
+        titleList.add(pos, title)
+    }
+
     override fun deleteTitle(pos: Int) {
         titleList.removeAt(pos)
     }

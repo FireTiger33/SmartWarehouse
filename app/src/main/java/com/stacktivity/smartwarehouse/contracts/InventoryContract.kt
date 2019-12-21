@@ -18,6 +18,8 @@ interface InventoryContract {
 
     interface Repository {
         fun addItem(item: Item)
+        fun removeItem(pos: Int)
+        fun restoreItem(item: Item, pos: Int)
         fun getItemsCount(): Int
         fun getItem(pos: Int): Item
         fun getCatalog(): ArrayList<String>

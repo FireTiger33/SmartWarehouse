@@ -3,21 +3,26 @@ package com.stacktivity.smartwarehouse.inventory
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.stacktivity.smartwarehouse.R
 import com.stacktivity.smartwarehouse.contracts.InventoryContract
 import com.stacktivity.smartwarehouse.data.InventoryRepository
 import com.stacktivity.smartwarehouse.data.RoomItemDataBase
 import com.stacktivity.smartwarehouse.ui.InventoryView
 import com.stacktivity.smartwarehouse.utils.ActivityUtils
+import com.stacktivity.smartwarehouse.utils.BaseItemTouchHelper
+import kotlinx.android.synthetic.main.activity_inventory.*
 
 
-class InventoryActivity: AppCompatActivity() {
+class InventoryActivity: AppCompatActivity(), BaseItemTouchHelper.ItemTouchHelperListener {
     private lateinit var presenter: InventoryContract.Presenter
+    private lateinit var repository: InventoryRepository
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +33,8 @@ class InventoryActivity: AppCompatActivity() {
 
         val fab: FloatingActionButton = findViewById(R.id.btn_add_item)
         fab.setOnClickListener {
-            createVoiceInput()
+            // createVoiceInput()
+            presenter.processVoiceInputResult(arrayListOf("Огурцы 5 штук", "помидоры 6 штук"))
         }
 
     }
@@ -67,7 +73,7 @@ class InventoryActivity: AppCompatActivity() {
         }
 
         // Create repository
-        val repository = InventoryRepository(
+        repository = InventoryRepository(
             getSharedPreferences(KEY_PREFERENCES, Context.MODE_PRIVATE),
             RoomItemDataBase.getInstance(applicationContext)?.itemsDao()
         )
@@ -82,6 +88,27 @@ class InventoryActivity: AppCompatActivity() {
         view.setListAdapter(presenter.getListAdapter() as RecyclerView.Adapter<RecyclerView.ViewHolder>)
     }
 
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {
+        checkNotNull(viewHolder)
+
+        // backup of removed item for undo purpose
+        val deletedItem = repository.getItem(viewHolder.adapterPosition)
+        val deletedIndex = viewHolder.adapterPosition
+
+        // remove the item from recycler view
+        repository.removeItem(deletedIndex)
+        presenter.getListAdapter().notifyItemRemoved(deletedIndex)
+
+        Snackbar
+            .make(fragment_container, "${deletedItem.itemName} удалены из отчёта!", Snackbar.LENGTH_LONG)
+            .setActionTextColor(Color.YELLOW)
+            // undo is selected, restore the deleted item
+            .setAction(R.string.undo) {
+                repository.restoreItem(deletedItem, deletedIndex)
+                presenter.getListAdapter().notifyItemInserted(deletedIndex)
+            }
+            .show()
+    }
     override fun onBackPressed() {
         finish()
     }

@@ -4,5 +4,7 @@
     <string name="start_inventory">Начать инвенторизацию</string>
     <string name="edit_database">Редактировать каталог товаров</string>
     <string name="create_report">Создать отчёт</string>
-    <string name="input_title">Введите наименование товара</string>
+    <string name="input_title">Введите наименование:</string>
+    <string name="undo">Отменить</string>
+    <string name="delete">Удалить</string>
 </resources>

@@ -20,6 +20,8 @@ interface CatalogContract {
 
     interface Repository {
         fun addTitle(name: String)
+        fun removeTitle(pos: Int)
+        fun restoreTitle(title: String, pos: Int)
         fun deleteTitle(pos: Int)
         fun getTitle(pos: Int): String
         fun getTitleCount():Int

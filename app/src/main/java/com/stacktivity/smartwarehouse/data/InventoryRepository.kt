@@ -28,6 +28,16 @@ class InventoryRepository(
         saveItemsToPreferences()
     }
 
+    override fun removeItem(pos: Int) {
+        items.removeAt(pos)
+        saveItemsToPreferences()
+    }
+
+    override fun restoreItem(item: Item, pos: Int) {
+        items.add(pos, item)
+        saveItemsToPreferences()
+    }
+
     override fun getItemsCount(): Int {
         return items.size
     }

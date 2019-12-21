@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
 import com.stacktivity.smartwarehouse.R
 import com.stacktivity.smartwarehouse.contracts.BaseListViewInterface
 
-abstract class BaseListView: Fragment(), BaseListViewInterface {
+abstract class BaseListView: Fragment(), BaseListViewInterface, BaseItemTouchHelper.ItemTouchHelperListener {
     private lateinit var itemsView: RecyclerView
     private lateinit var itemListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
 
@@ -32,6 +31,12 @@ abstract class BaseListView: Fragment(), BaseListViewInterface {
         } catch (e: UninitializedPropertyAccessException) {}
     }
 
+    override fun setItemTouchHelper() {
+        itemsView.itemAnimator = DefaultItemAnimator()
+        itemsView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        ItemTouchHelper(getItemTouchHelper()).attachToRecyclerView(itemsView)
+    }
+
     override fun showMessage(msg: String) {
         Snackbar.make(itemsView, msg,
             Snackbar.LENGTH_LONG).show()
@@ -50,5 +55,10 @@ abstract class BaseListView: Fragment(), BaseListViewInterface {
         itemsView = view.findViewById(R.id.items_container)
         itemsView.layoutManager = LinearLayoutManager(context)
         itemsView.adapter = itemListAdapter
+        setItemTouchHelper()
+    }
+
+    private fun getItemTouchHelper(): ItemTouchHelper.Callback {
+        return  BaseItemTouchHelper(0, ItemTouchHelper.LEFT, this)
     }
 }
