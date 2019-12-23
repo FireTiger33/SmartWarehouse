@@ -24,6 +24,7 @@
 
         <activity android:name=".inventory.InventoryActivity"/>
         <activity android:name=".catalog.CatalogActivity"/>
+        <activity android:name=".report.ReportActivity"/>
     </application>
 
 </manifest>

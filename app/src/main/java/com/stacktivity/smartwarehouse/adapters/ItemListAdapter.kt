@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.stacktivity.smartwarehouse.R
-import com.stacktivity.smartwarehouse.contracts.InventoryContract
+import com.stacktivity.smartwarehouse.data.entities.Item
 
 class ItemListAdapter(
-    private val presenter: InventoryContract.Presenter)
+    private val provider: ContentProvider)
     : RecyclerView.Adapter<ItemViewHolder>()
 {
 
@@ -20,10 +20,20 @@ class ItemListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return presenter.getItemsCount()
+        return provider.getItemsCount()
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(presenter.getItem(position))
+        holder.bind(provider.getItem(position))
+        holder.itemView.setOnClickListener {
+            provider.onItemClick(position)
+        }
+    }
+
+
+    interface ContentProvider {
+        fun getItemsCount(): Int
+        fun getItem(pos: Int): Item
+        fun onItemClick(pos: Int)
     }
 }

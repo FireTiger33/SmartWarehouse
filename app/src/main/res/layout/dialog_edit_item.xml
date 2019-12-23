@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        style="@style/Property"
+        android:text="@string/input_diff_num" />
+
+    <EditText
+        android:id="@+id/item_count"
+        android:layout_width="wrap_content"
+        android:minWidth="64dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/item_text_size"
+        android:paddingTop="@dimen/def_padding"
+        android:paddingBottom="@dimen/def_padding"
+        tools:text = "50000"
+        android:inputType="numberDecimal"
+        tools:ignore="Autofill,LabelFor" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/item_count"
+        android:layout_below="@+id/title"
+        android:paddingTop="@dimen/def_padding"
+        android:paddingStart="@dimen/small_padding"
+        android:paddingEnd="@dimen/small_padding"
+        android:textSize="@dimen/item_text_size"
+        tools:text="шт" />
+
+</RelativeLayout>

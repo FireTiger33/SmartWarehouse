@@ -5,11 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stacktivity.smartwarehouse.adapters.ItemListAdapter
 import com.stacktivity.smartwarehouse.contracts.InventoryContract
 import com.stacktivity.smartwarehouse.data.entities.Item
+import com.stacktivity.smartwarehouse.utils.ItemUtils
 
 class InventoryPresenter(
 //    private val view: InventoryContract.View,
     private val repository: InventoryContract.Repository
-) : InventoryContract.Presenter {
+) : InventoryContract.Presenter, ItemListAdapter.ContentProvider {
 
     private lateinit var view: InventoryContract.View
 
@@ -19,15 +20,22 @@ class InventoryPresenter(
         return itemListAdapter
     }
 
-    /*init {
-        view.setPresenter(this)
-    }*/
 
     override fun attachView(view: InventoryContract.View) {
         this.view = view
     }
 
-    // For adapter
+    override fun onItemClick(pos: Int) {
+        view.showEditItemDialog(repository.getItem(pos), object: ItemUtils.ItemCallback {
+            override fun onSuccess(item: Item) {
+                repository.removeItem(pos)
+                repository.restoreItem(item, pos)
+                itemListAdapter.notifyItemChanged(pos)
+            }
+
+        })
+    }
+
     override fun getItemsCount(): Int {
         return repository.getItemsCount()
     }
@@ -43,7 +51,7 @@ class InventoryPresenter(
         val regexCount = Regex("[0-9]+")
         val regexQtyName = Regex("([0-9]+.?)+([А-Яа-я]+\\s?)")
         var name = ""
-        var count = 0
+        var count = 0f
         var qtyName = ""
 
         // Check for number in sentence
@@ -54,12 +62,12 @@ class InventoryPresenter(
             val resultStringCount: String? = regexCount.find(result)?.value
             count = if (resultStringCount != "" && resultStringCount != null) {
                 view.showDebugMessage(resultStringCount)
-                resultStringCount.toInt()
+                resultStringCount.toFloat()
             }
-            else 0
+            else 0f
 
             // Select the current var
-            if (count != 0) {
+            if (count != 0f) {
                 suitableResult = result
                 break
             }
@@ -81,7 +89,7 @@ class InventoryPresenter(
         // Check results
         when {
             name == "" -> view.showMessage("Наименование товара не присутствует в каталоге")
-            count == 0 -> view.showMessage("Не распознано колличество товара")
+            count == 0f -> view.showMessage("Не распознано колличество товара")
             qtyName == "" -> view.showMessage("Укажите единицу наименования количества товара")
 
             else -> {

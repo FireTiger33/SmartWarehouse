@@ -86,6 +86,7 @@ class InventoryActivity: AppCompatActivity(), BaseItemTouchHelper.ItemTouchHelpe
         // Configure view
         @Suppress("UNCHECKED_CAST")
         view.setListAdapter(presenter.getListAdapter() as RecyclerView.Adapter<RecyclerView.ViewHolder>)
+//        view.setPresenter(presenter)
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int, position: Int) {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.stacktivity.smartwarehouse.catalog.CatalogActivity
 import com.stacktivity.smartwarehouse.inventory.InventoryActivity
+import com.stacktivity.smartwarehouse.report.ReportActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,10 @@ class MainActivity : AppCompatActivity() {
             showInventoryScreen()
         }
 
+        btn_create_report.setOnClickListener {
+            showReportScreen()
+        }
+
 
     }
 
@@ -31,6 +36,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showInventoryScreen() {
         val intent = Intent(this, InventoryActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun showReportScreen() {
+        val intent = Intent(this, ReportActivity::class.java)
         startActivity(intent)
     }
 }
